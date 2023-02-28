@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from "react";
 import HelloWorld from "../Component/HelloWorld";
-import axios from "axios";
 import ProductCard from "../Component/ProductCard";
-import { useParams } from "react-router-dom";
+import HttpRequest from "../Hooks/HttpRequest";
 import Loader from "../Component/Loader";
 
 export default function Home() {
-  const [product, setProduct] = useState(null);
-  const { id } = useParams();
-
-  console.log(id);
-
-  useEffect(() => {
-    const url = "https://63fc9eab859df29986c0aafd.mockapi.io/crud/product/";
-    axios.get(url).then((response) => setProduct(response.data));
-  }, []);
+  const url = "https://63fc9eab859df29986c0aafd.mockapi.io/crud/product/";
+  let product = HttpRequest(url);
+  console.log(product);
 
   return (
     <div className="w-full p-3">
@@ -22,8 +15,8 @@ export default function Home() {
         <HelloWorld name="Nada" />
       </div>
       <div className="w-full flex flex-wrap justify-around gap-7 p-3">
-        {product ? (
-          product.map((index) => (
+        {product.data &&
+          product.data.map((index) => (
             <ProductCard
               id={index.id}
               name={index.name}
@@ -31,9 +24,19 @@ export default function Home() {
               price={index.price}
               description={index.description}
             />
-          ))
-        ) : (
-          <div>There is no data</div>
+          ))}
+        {product.loading && (
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5">
+              <Loader />
+            </div>
+            <div className="text-xl">Loading</div>
+          </div>
+        )}
+        {product.error && (
+          <div className="text-sky-600">
+            There was an error please refresh or try again later.
+          </div>
         )}
       </div>
     </div>

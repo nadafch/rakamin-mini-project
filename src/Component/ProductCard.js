@@ -8,9 +8,11 @@ export default function ProductCard(props) {
       <div className="w-[150px] rounded-sm">
         <img src={props?.image} alt={props?.image} />
       </div>
-      <h1 className="font-bold text-xl">{props?.name}</h1>
-      <p className="text-sm">{props?.price}</p>
-      <p className>{props?.description}</p>
+      <div className="p-1 text-center">
+        <h1 className="font-bold text-xl">{props?.name}</h1>
+        <p className="text-sm">{props?.price}</p>
+        <p className="text-justify">{props?.description}</p>
+      </div>
       <button
         className="w-24 mt-4 p-2 bg-sky-600 text-white rounded-lg"
         onClick={() =>
